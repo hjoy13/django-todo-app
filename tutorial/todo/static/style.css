@@ -1,0 +1,238 @@
+/* ─────────────────────────────────────────
+   style.css  —  Todo App
+   Works with the original list.html as-is.
+   Just add this in your base template or
+   directly in list.html:
+   <link rel="stylesheet" href="{% static 'style.css' %}">
+───────────────────────────────────────── */
+
+/* ── VARIABLES ── */
+:root {
+  --bg:       #f5f3ef;
+  --surface:  #ffffff;
+  --border:   #e2ddd6;
+  --ink:      #1a1814;
+  --muted:    #9b9488;
+  --accent:   #d4502a;
+  --done-bg:  #ede9e3;
+  --done-txt: #b0a89e;
+  --radius:   12px;
+  --shadow:   0 2px 12px rgba(0,0,0,.07);
+}
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  padding: 2.5rem 1.25rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* constrain all direct children to same max-width */
+body > h1,
+body > form,
+body > hr,
+body > ul {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* ── PAGE TITLE ── */
+body > h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: -1px;
+  color: var(--ink);
+  margin-bottom: 1.75rem;
+}
+body > h1::after {
+  content: '.';
+  color: var(--accent);
+}
+
+/* ── ADD TASK FORM ── */
+body > form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+body > form input[type="text"] {
+  flex: 1 1 180px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: .6rem 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+body > form input[type="text"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(212,80,42,.12);
+}
+body > form input[type="text"]::placeholder { color: var(--muted); }
+
+body > form button[type="submit"] {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: .6rem 1.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: .9rem;
+  cursor: pointer;
+  transition: opacity .2s, transform .1s;
+  white-space: nowrap;
+}
+body > form button[type="submit"]:hover {
+  opacity: .88;
+  transform: translateY(-1px);
+}
+
+/* ── DIVIDER ── */
+body > hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 0 1.75rem;
+}
+
+/* ── LIST RESET ── */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ── TODO CARD (each <li>) ── */
+li {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.1rem 1.25rem .9rem;
+  margin-bottom: .85rem;
+  transition: transform .15s, box-shadow .15s;
+  border-left: 3px solid var(--accent);
+}
+li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.09);
+}
+
+/* Completed card — muted style */
+li:has(s) {
+  background: var(--done-bg);
+  border-color: transparent;
+  border-left: 3px solid var(--border);
+  opacity: .75;
+}
+li:has(s):hover { transform: none; box-shadow: var(--shadow); }
+
+/* ── TYPOGRAPHY INSIDE CARDS ── */
+
+/* Active task title */
+li h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+  margin-bottom: .25rem;
+}
+
+/* Timestamps */
+li h6 {
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: .2rem;
+}
+
+/* Description */
+li p {
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: .3rem;
+  margin-bottom: 0;
+  line-height: 1.55;
+}
+
+/* Completed strikethrough title */
+li s {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* HR inside completed card */
+li hr {
+  border: none;
+  border-top: 1px dashed var(--border);
+  margin: .75rem 0 0;
+}
+
+/* ── ACTION BUTTONS (forms after </li>) ── */
+ul > form {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+ul > form button[type="submit"] {
+  border: none;
+  border-radius: 7px;
+  padding: .35rem .9rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: .4rem;
+  margin-bottom: .85rem;
+  transition: opacity .2s, transform .1s;
+}
+ul > form button[type="submit"]:hover {
+  opacity: .85;
+  transform: translateY(-1px);
+}
+
+/* Target each button by sibling order */
+/* Complete button — first form after li */
+ul > form:nth-of-type(3n+1) button { background: #e8f5f0; color: #2a9d6e; }
+/* Edit button — second form */
+ul > form:nth-of-type(3n+2) button { background: #eef2ff; color: #4361c2; }
+/* Delete button — third form */
+ul > form:nth-of-type(3n+3) button { background: #fdecea; color: #c0392b; }
+
+/* HR between todo blocks */
+ul > hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 0 .85rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  body { padding: 1.5rem .9rem 3rem; }
+  body > h1 { font-size: 1.6rem; }
+  body > form { flex-direction: column; }
+  body > form input[type="text"],
+  body > form button[type="submit"] { width: 100%; }
+  li { padding: .9rem 1rem; }
+}
