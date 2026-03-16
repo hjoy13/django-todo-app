@@ -1,18 +1,7 @@
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
-
-
+{% extends 'base.html' %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'style.css' %}">
 
-
-<nav>
-    <span>👋 Hello, {{ request.user.username }}</span>
-    <form method="post" action="{% url 'logout' %}" style="display:inline">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
-</nav>
+{% block content %}
 
 <h1>Todo App</h1>
 
@@ -25,8 +14,6 @@
 
 <hr />
 
-
-
 <ul>
     {% for t in todos %}
     <li>
@@ -36,23 +23,21 @@
 
         {% if t.edited %}
         <h6>Updated : ({{ t.updated_at }})</h6>
-        {% endif %} 
-        
+        {% endif %}
+
         {% if t.description %}
         <p>{{ t.description }}</p>
         {% endif %}
 
-        
-
         {% else %}
 
         <s>{{ t.title }}</s>
-        <h6>Created : ({{ t.created_at}})</h6>
+        <h6>Created : ({{ t.created_at }})</h6>
 
-        {% if t.edited%}
+        {% if t.edited %}
         <h6>Updated : ({{ t.updated_at }})</h6>
-        {% endif %} 
-        
+        {% endif %}
+
         {% if t.description %}
         <p>{{ t.description }}</p>
         {% endif %}
@@ -61,28 +46,27 @@
 
         {% endif %}
     </li>
-    
+
     {% if not t.completed %}
-
-     <form action="/completed/{{ t.id }}/" method="POST" style="display:inline-block">
-    {% csrf_token %}
-    <button type="submit">Completed</button>
+    <form action="/completed/{{ t.id }}/" method="POST" style="display:inline-block">
+        {% csrf_token %}
+        <button type="submit">Completed</button>
     </form>
 
-    
     <form action="/edit/{{ t.id }}/" method="GET" style="display:inline-block">
-    {% csrf_token %}
-    <button type="submit">Edit</button>
+        {% csrf_token %}
+        <button type="submit">Edit</button>
     </form>
-
     {% endif %}
 
     <form action="/delete/{{ t.id }}/" method="POST" style="display:inline-block">
-    {% csrf_token %}
-    <button type="submit">Delete</button>
+        {% csrf_token %}
+        <button type="submit">Delete</button>
     </form>
 
     <hr>
 
     {% endfor %}
 </ul>
+
+{% endblock %}

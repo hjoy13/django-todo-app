@@ -1,17 +1,32 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Todo App{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
-
 <body>
-  <main>
-    {% block content %}
-    {% endblock %}
-  </main>
-</body>
 
+  <nav>
+    <a href="{% url 'todo_list' %}" class="brand">Todo<span>.</span></a>
+    <div class="nav-right">
+      {% if user.is_authenticated %}
+        <span class="username">{{ user.username }}</span>
+        <form method="post" action="{% url 'logout' %}" style="margin:0">
+          {% csrf_token %}
+          <button type="submit" class="logout-btn">Log out</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}">Log in</a>
+        <a href="{% url 'signup' %}">Sign up</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+</body>
 </html>

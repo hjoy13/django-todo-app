@@ -1,19 +1,32 @@
-<!-- templates/home.html -->
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Home — Todo{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<p>Hi {{ user.username }}!</p>
-<p><a href="{% url 'password_change' %}">Password Change</a></p>
-<form action="{% url 'logout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Log Out</button>
-</form>
-{% else %}
-<p>You are not logged in</p>
-<p><a href="{% url 'password_reset' %}">Password Reset</a></p>
-<a href="{% url 'login' %}">Log In</a>
-{% endif %}
+<div class="auth-page">
+  <div class="auth-card">
+
+    {% if user.is_authenticated %}
+      <h1>Hello<span>.</span></h1>
+      <p class="subtitle">Welcome back, {{ user.username }}</p>
+      <a href="{% url 'todo_list' %}">
+        <button class="submit-btn">Go to my todos</button>
+      </a>
+      <p class="switch-link">
+        <a href="{% url 'password_change' %}">Change password</a>
+      </p>
+
+    {% else %}
+      <h1>Welcome<span>.</span></h1>
+      <p class="subtitle">Manage your tasks, one at a time</p>
+      <a href="{% url 'login' %}">
+        <button class="submit-btn">Log in</button>
+      </a>
+      <p class="switch-link">
+        No account? <a href="{% url 'signup' %}">Sign up</a>
+      </p>
+    {% endif %}
+
+  </div>
+</div>
 {% endblock %}
