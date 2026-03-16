@@ -1,11 +1,13 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required 
 
 from .models import Todo
 
 # Create your views here.
 
+@login_required
 def todo_list(request):
-    todos = Todo.objects.all()
+    todos = Todo.objects.filter(user=request.user)  
 
     if request.method == "POST":
         title = request.POST.get("title")
@@ -14,6 +16,7 @@ def todo_list(request):
 
         if title:
             Todo.objects.create(
+                user=request.user,
                 title=title,
                 description=description,
                 
@@ -25,8 +28,9 @@ def todo_list(request):
     return  render(request, "todo/list.html", {"todos":todos})
 
 
+@login_required
 def complete_todo(request,id):
-    todo = Todo.objects.get(id=id)
+    todo = get_object_or_404(Todo, id=id, user=request.user)
     todo.completed = True
     todo.save()
 
@@ -34,7 +38,7 @@ def complete_todo(request,id):
 
 
 def edit_todo(request,id):
-    todo = Todo.objects.get(id=id)
+    todo = get_object_or_404(Todo, id=id, user=request.user)
 
     if request.method == "POST":
 

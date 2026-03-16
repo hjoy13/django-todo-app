@@ -6,7 +6,13 @@
 <link rel="stylesheet" href="{% static 'style.css' %}">
 
 
-
+<nav>
+    <span>👋 Hello, {{ request.user.username }}</span>
+    <form method="post" action="{% url 'logout' %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+</nav>
 
 <h1>Todo App</h1>
 
